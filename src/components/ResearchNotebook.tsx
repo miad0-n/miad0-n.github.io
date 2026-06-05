@@ -15,13 +15,13 @@ interface Note {
 const DEFAULT_NOTES: Note[] = [
   {
     id: '1',
-    timestamp: '2026-06-01 14:32',
-    content: 'THESIS: Standard dashboard grids look stiff. Explored responsive variable dimensions where modules expand by 15% when mouse dwell times exceed 800ms. Tested smooth cubic-bezier transitions for ease.',
+    timestamp: '2026-06-05 14:32',
+    content: 'Tried to decide if I should learn Rust or just make another sandwich. The sandwich seems more immediately rewarding.',
   },
   {
     id: '2',
     timestamp: '2026-06-03 09:15',
-    content: 'FEEDBACK: Tested three.js wireframe sphere on layout modules. Discovered viewport dimension changes cause layout jumps. Integrated a ResizeObserver on parent container elements to dynamically recalibrate canvas boundaries.',
+    content: 'Discovered that if you delete node_modules and run npm install, it solves 90% of your problems. The other 10% requires overthinking.',
   }
 ];
 
@@ -76,18 +76,18 @@ export const ResearchNotebook: React.FC = () => {
   };
 
   return (
-    <div className="w-full h-full flex flex-col bg-[#141414] border border-white/10 p-5 rounded-lg shadow-sm select-none">
-      <div className="flex justify-between items-center border-b border-white/10 pb-3 mb-4">
+    <div className="w-full h-full flex flex-col bg-white border border-[#111827]/10 p-5 rounded-lg shadow-sm select-none text-[#111827]">
+      <div className="flex justify-between items-center border-b border-[#111827]/10 pb-3 mb-4">
         <div className="flex items-center gap-2">
-          <PenTool size={13} className="text-white" />
-          <h4 className="font-mono text-[10px] tracking-wider text-white uppercase font-bold">
-            RESEARCH_PAD.LOG
+          <PenTool size={13} className="text-[#FF5701]" />
+          <h4 className="font-mono text-[10px] tracking-wider text-[#111827] uppercase font-bold">
+            SCRATCHPAD.LOG
           </h4>
         </div>
         {notes.length > 0 && (
           <button
             onClick={handleClearAll}
-            className="font-mono text-[8px] text-white/50 hover:text-white uppercase tracking-widest border border-dashed border-white/20 hover:border-white/40 transition-all duration-300 px-2 py-0.5"
+            className="font-mono text-[8px] text-[#4B5563] hover:text-[#FF5701] uppercase tracking-widest border border-dashed border-[#111827]/10 hover:border-[#FF5701]/30 transition-all duration-300 px-2 py-0.5"
           >
             CLEAR ALL
           </button>
@@ -100,11 +100,11 @@ export const ResearchNotebook: React.FC = () => {
           value={newContent}
           onChange={(e) => setNewContent(e.target.value)}
           placeholder="Append live research observations here..."
-          className="w-full h-20 bg-white/5 hover:bg-white/10 focus:bg-white/5 font-mono text-[10px] p-2.5 border border-white/10 rounded placeholder-white/30 focus:outline-none focus:border-white transition-all resize-none leading-relaxed text-[#F5F5F5]"
+          className="w-full h-20 bg-[#111827]/5 hover:bg-[#111827]/10 focus:bg-[#111827]/5 font-mono text-[10px] p-2.5 border border-[#111827]/10 rounded placeholder-[#111827]/30 focus:outline-none focus:border-[#FF5701] transition-all resize-none leading-relaxed text-[#111827]"
         />
         <button
           type="submit"
-          className="flex items-center justify-center gap-1.5 font-mono text-[9px] uppercase tracking-widest bg-white hover:bg-[#EAEAEA] text-[#0A0A0A] py-2 rounded font-bold transition-colors duration-300 shadow-sm cursor-pointer"
+          className="flex items-center justify-center gap-1.5 font-mono text-[9px] uppercase tracking-widest bg-[#FF5701] hover:bg-[#e04c00] text-white py-2 rounded font-bold transition-colors duration-300 shadow-sm cursor-pointer"
         >
           <Plus size={11} /> APP_LOG_RECORD
         </button>
@@ -113,29 +113,29 @@ export const ResearchNotebook: React.FC = () => {
       {/* Note scrolling list */}
       <div className="flex-1 overflow-y-auto space-y-3 pr-1 max-h-[190px] md:max-h-[220px]">
         {notes.length === 0 ? (
-          <div className="h-28 flex flex-col items-center justify-center border border-dashed border-white/10 rounded bg-white/5">
-            <span className="font-mono text-[9px] text-white/40">NOTEBOOK EMPTY</span>
-            <span className="font-mono text-[8px] text-white/20 mt-1">NO OBSERVED OBSERVATIONS</span>
+          <div className="h-28 flex flex-col items-center justify-center border border-dashed border-[#111827]/10 rounded bg-[#111827]/5">
+            <span className="font-mono text-[9px] text-[#4B5563]/50">NOTEBOOK EMPTY</span>
+            <span className="font-mono text-[8px] text-[#4B5563]/30 mt-1">NO OBSERVED OBSERVATIONS</span>
           </div>
         ) : (
           notes.map((note) => (
             <div
               key={note.id}
-              className="group p-3 border border-white/5 hover:border-white/15 rounded bg-white/5 hover:bg-white/10 transition-all duration-300"
+              className="group p-3 border border-[#111827]/5 hover:border-[#FF5701]/20 rounded bg-[#111827]/5 hover:bg-[#111827]/10 transition-all duration-300"
             >
               <div className="flex justify-between items-center mb-1.5">
-                <span className="font-mono text-[8px] text-white/40 font-bold">
+                <span className="font-mono text-[8px] text-[#4B5563]/55 font-bold">
                   {note.timestamp}
                 </span>
                 <button
                   onClick={() => handleDeleteNote(note.id)}
-                  className="opacity-0 group-hover:opacity-100 text-white/50 hover:text-white transition-all duration-300"
+                  className="opacity-0 group-hover:opacity-100 text-[#4B5563]/50 hover:text-[#FF5701] transition-all duration-300"
                   title="Delete log entry"
                 >
                   <Trash2 size={11} />
                 </button>
               </div>
-              <p className="font-mono text-[9.5px] leading-relaxed text-white/85 whitespace-pre-line text-left">
+              <p className="font-mono text-[9.5px] leading-relaxed text-[#111827]/90 whitespace-pre-line text-left">
                 {note.content}
               </p>
             </div>

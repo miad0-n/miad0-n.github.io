@@ -6,63 +6,63 @@
 import { Project, LabItem, NavSection, ExperienceItem } from './types';
 
 export const SECTIONS: NavSection[] = [
-  { index: 0, label: 'MANIFESTO', tag: 'Introduction' },
-  { index: 1, label: 'SELECTED', tag: 'Selected Work' },
-  { index: 2, label: 'RESEARCH', tag: 'Experimental Research' },
-  { index: 3, label: 'STUDENT_BIO', tag: 'Student Bio' },
-  { index: 4, label: 'CONNECT', tag: 'Inquiry' },
+  { index: 0, label: 'INTRO', tag: 'Hi, I\'m Miad' },
+  { index: 1, label: 'THE_VOID', tag: 'Selected Work' },
+  { index: 2, label: 'THE_LAB', tag: 'Currently Exploring' },
+  { index: 3, label: 'BIO', tag: 'About' },
+  { index: 4, label: 'CONNECT', tag: 'Say hi (or don\'t)' },
 ];
 
 export const PROJECTS: Project[] = [
   {
-    id: 'kinetica',
+    id: 'something-probably',
     index: '01',
-    category: 'BRAND / GENERATIVE GRAPHICS',
-    title: 'KINETICA',
-    year: '2024',
-    role: 'Lead Visual Technologist',
-    tags: ['GLSL', 'SVG Engine', 'Houdini Pipeline', 'Generative Art'],
-    description: 'A dynamic, kinetic identity system designed for interactive physical exhibition spaces. The identity reacts live to ambient audience sounds and proximity, morphing a static brand mark into an ambient visual entity.',
-    challenge: 'Logos created for physical spaces are traditionally static. When digitized or placed on LED walls, they lack context. The brief was to create an identity that behaves like a living organism, responding directly to physical environment attributes without lagging.',
-    solution: 'Designed a React + WebGL generator that deforms typography contours using curl noise vectors. It connects to ambient audio frequencies, generating high-contrast wireframe meshes that export clean SVG paths for high-fidelity print production live.',
+    category: 'PROCASTINATION / TBD',
+    title: 'Something, probably',
+    year: 'COMING SOON',
+    role: 'Lead Dreamer',
+    tags: ['Dreaming', 'Thinking', 'Snacks', 'Vibes'],
+    description: 'This project is currently a spark of imagination. It has no code, no mockups, and absolutely no documentation.',
+    challenge: 'Actually starting it. There are too many movies to watch, snacks to eat, and interesting articles to read.',
+    solution: 'Add it to the portfolio to make it look like I\'m doing something, then never think about it again.',
     metrics: [
-      'Interactive feed: steady 60 FPS under heavy crowd loads',
-      'Over 40,000 unique SVGs generated and printed live',
-      'Adopted as official brand suite for Zurich Biotech Pavilion 2025'
+      '0 lines of code written',
+      '100% chance of postponement',
+      '12 browser tabs dedicated to it'
     ]
   },
   {
-    id: 'agentic',
+    id: 'untitled-idea',
     index: '02',
-    category: 'UX / INTUITIVE DESIGN',
-    title: 'AGENTIC',
-    year: '2025',
-    role: 'Interface Architect & UX Designer',
-    tags: ['React', 'Priority Rendering', 'Constraint Layouts', 'Cognitive Sync'],
-    description: 'An experimental web dashboard that rejects rigid static widgets of the 2010s. Instead, it leverages a prioritize-to-expand grid that flows organically in response to the user’s cognitive attention path and real-time AI tool outputs.',
-    challenge: 'Modern AI tools create unpredictable text chunks or custom objects that cause layouts to break or force users into scroll hell. AI outputs require flexible spatial prioritization.',
-    solution: 'Engineered a variable CSS Grid engine with canvas-based attention tracking. Portions of the workspace expand or compress smoothly on interest tags. It uses visual hierarchy to emphasize critical user-facing outcomes first, rendering complex sub-grids only if requested.',
+    category: 'OVERTHINKING / LATE NIGHT',
+    title: 'Untitled idea #47',
+    year: 'IN MY HEAD',
+    role: 'Sleep Deprived Explorer',
+    tags: ['Coffee', 'Napkins', '2 AM Ideas'],
+    description: 'An idea that occurred to me at 2 AM. It felt revolutionary at the time. The next morning, it made absolutely no sense.',
+    challenge: 'Remembering what the idea actually was. The notepad scribble just says \'like Uber but for squirrels\'.',
+    solution: 'Let it simmer in the back of my mind until it is replaced by Untitled idea #48.',
     metrics: [
-      'Completed complex multi-agent workflows 42% faster',
-      'Minimized eye-travel distance by 1700px per session',
-      'Featured on multiple design networks as UI concept of the year'
+      '3 cups of coffee consumed',
+      '1 scribble on a napkin',
+      '100% regret'
     ]
   },
   {
-    id: 'brutal-os',
+    id: 'ask-future',
     index: '03',
-    category: 'WEB / ARCHITECTURE',
-    title: 'BRUTAL.OS',
-    year: '2024',
-    role: 'Creative Developer',
-    tags: ['TypeScript', 'Micro-kernel Sandbox', 'Monospaced UI', 'Vanilla CSS'],
-    description: 'A highly functional monospaced web environment that replaces bloated operating systems. Designed to serve as a high-speed command terminal, text-editor, and document repository inside a minor 15KB package.',
-    challenge: 'Modern workspace tools like Notion, Slack, and IDEs run heavy background tasks, slowing down low-power laptops and phones when we only need simple, focused notepad and terminal automation.',
-    solution: 'Created an in-memory virtual filesystem with an interactive CSS Grid window manager. Features include single-click shell scripting, local storage syncing, custom micro-tools (JSON pretty-printer, ASCII converter, text expander) all styled in premium 2-color high-contrast ink.',
+    category: 'FUTURE WORK / TBD',
+    title: 'Ask me in 6 months',
+    year: 'TBD',
+    role: 'Future Professional',
+    tags: ['Hopeful', 'Under Construction', 'Procrastination'],
+    description: 'I am confident that in six months, I will have a stunning project to show you. Please set a calendar reminder.',
+    challenge: 'Finding the motivation to actually build it between now and then.',
+    solution: 'Procrastinate for 5 months and 3 weeks, then build a basic React app the night before you check.',
     metrics: [
-      'Perfect 100/100 Lighthouse performance on all devices',
-      'Loads fully interactive in under 120ms even on 2G connections',
-      'Acquired over 15,000 active GitHub stars'
+      '6 months of anticipation',
+      '100% trust in my future self',
+      '0% progress today'
     ]
   }
 ];
@@ -72,32 +72,32 @@ export const LAB_ITEMS: LabItem[] = [
     id: 'shaders',
     index: '01',
     title: 'WAVE SHADERS',
-    tech: 'WebGL / Fragment code',
-    description: 'An interactive mathematical liquid noise simulation that reactively deforms and repels on mouse hover.',
+    tech: 'HTML5 Canvas / Math',
+    description: 'Procedural particles reacting to coordinate drag vectors. Also known as: moving dots around to look busy.',
     interactiveKey: 'shaders',
   },
   {
     id: 'threejs',
     index: '02',
-    title: '3D WIRE SPHERE',
-    tech: 'React Three Fiber/Three.js',
-    description: 'A spinning geometric wireframe cage with kinetic physics that responds to mouse inertia and click drags.',
+    title: 'VECTOR SPHERE',
+    tech: '2D Canvas / 3D Projection',
+    description: 'Simulated spatial mathematics utilizing linear rendering. In other words, a spinning cage of math.',
     interactiveKey: 'threejs',
   },
   {
     id: 'figma-plugins',
     index: '03',
-    title: 'AUTOMATION PLUGINS',
-    tech: 'Figma API / Typography Helper',
-    description: 'A handy tool for developers to analyze text color contrast on elements live for compliance and grid scaling.',
+    title: 'CONTRAST AUDITOR',
+    tech: 'Vanilla JS / WCAG Form',
+    description: 'Checking if my color choices are legally compliant, so the contrast police don\'t arrest me.',
     interactiveKey: 'figma',
   },
   {
     id: 'raw-code',
     index: '04',
-    title: 'RAW MATH EXERCISES',
-    tech: 'Vanilla JavaScript',
-    description: 'An interactive formula visualizer demonstrating real-time Fourier series and math wave assemblies.',
+    title: 'WAVE ASSEMBLER',
+    tech: 'Fourier Series / Canvas',
+    description: 'Interlinked radial sines synthesizing mathematical waveforms. Generating waves because it looks cool.',
     interactiveKey: 'rawcode',
   },
 ];
@@ -105,20 +105,20 @@ export const LAB_ITEMS: LabItem[] = [
 export const EXPERIENCE: ExperienceItem[] = [
   {
     year: '2024 — PRES.',
-    role: 'Interaction Designer & Creative Tech Fellow',
-    institution: 'Google AI Studio & Laboratory Exploration',
-    description: 'Working at the boundary of modern visual development. Prototyping next-generation interfaces for human-model collaboration, implementing custom React architectures, and research setups.'
+    role: 'Professional Beginner & Tab Hoarder',
+    institution: 'The Internet',
+    description: 'Accumulating hundreds of bookmarks, downloading open-source libraries I will never use, and nodding during tech talks.'
   },
   {
     year: '2023 — 2024',
-    role: 'Web Specialist & UI Contractor',
-    institution: 'Substance Media Zurich',
-    description: 'Authored stateful web animations and interactive graphic software for creative agencies, cultural websites, and scientific exhibitions. Built custom high-performance canvas frameworks.'
+    role: 'Snack Specialist & Code Breaker',
+    institution: 'Kitchen Lab',
+    description: 'Researched optimal cookie-to-milk ratios while waiting for npm install to finish. Successfully broke local environments 14 times.'
   },
   {
     year: '2021 — 2025',
-    role: 'BFA Interaction Design Candidate',
-    institution: 'Metro Academy of Art & Technology',
-    description: 'Focusing on kinetic typography, reactive environments, data visualizations, and system architecture. Thesis on organic UI layouts designed to combat digital fatigue.'
+    role: 'Full-Time Googler & Explorer',
+    institution: 'University of Copy-Paste',
+    description: 'Majoring in \'how to center a div\' and minoring in \'stack overflow copy-pasting\'. Thesis on why CSS is hard.'
   }
 ];

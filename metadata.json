@@ -1,6 +1,6 @@
 {
-  "name": "Creative Student Portfolio",
-  "description": "An elegant, responsive visual portfolio presenting a creative student's work, research lab, bio, and contact links using smooth vertical navigation.",
+  "name": "Miad — Exploring",
+  "description": "Miad. Student. Professional beginner. Currently exploring new possibilities and accumulating untitled ideas.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

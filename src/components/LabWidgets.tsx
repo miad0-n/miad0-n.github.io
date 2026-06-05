@@ -49,8 +49,8 @@ export const WaveFieldWidget: React.FC = () => {
       ctx.clearRect(0, 0, width, height);
       phase += 0.02;
 
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.04)';
-      ctx.fillStyle = '#FFFFFF';
+      ctx.strokeStyle = 'rgba(255, 87, 1, 0.04)';
+      ctx.fillStyle = '#FF5701';
 
       for (let x = 15; x < width - 15; x += size) {
         for (let y = 15; y < height - 15; y += size) {
@@ -77,7 +77,7 @@ export const WaveFieldWidget: React.FC = () => {
           const dotSize = dist < maxDist ? 1.5 + (1 - dist / maxDist) * 2 : 1;
           ctx.beginPath();
           ctx.arc(posX, posY, dotSize, 0, Math.PI * 2);
-          ctx.fillStyle = dist < maxDist ? `rgba(255, 255, 255, ${0.4 + (1 - dist / maxDist) * 0.6})` : 'rgba(255, 255, 255, 0.15)';
+          ctx.fillStyle = dist < maxDist ? `rgba(255, 87, 1, ${0.4 + (1 - dist / maxDist) * 0.6})` : 'rgba(255, 87, 1, 0.15)';
           ctx.fill();
 
           // Sub-grid lines connecting responsive nodes
@@ -85,7 +85,7 @@ export const WaveFieldWidget: React.FC = () => {
             ctx.beginPath();
             ctx.moveTo(posX, posY);
             ctx.lineTo(mouseRef.current.x, mouseRef.current.y);
-            ctx.strokeStyle = `rgba(255, 255, 255, ${(1 - dist / maxDist) * 0.15})`;
+            ctx.strokeStyle = `rgba(255, 87, 1, ${(1 - dist / maxDist) * 0.15})`;
             ctx.lineWidth = 0.5;
             ctx.stroke();
           }
@@ -114,7 +114,7 @@ export const WaveFieldWidget: React.FC = () => {
         </div>
         <div>
           <h4 className="font-sans font-bold text-lg leading-tight text-white">WAVE DEFLECTION</h4>
-          <p className="font-mono text-[9.5px] text-white/50 mt-1 max-w-[180px]">Procedural particles reacting to coordinate drag vectors.</p>
+          <p className="font-mono text-[9.5px] text-white/50 mt-1 max-w-[180px]">Procedural particles reacting to coordinate drag vectors. Also known as: moving dots around to look busy.</p>
         </div>
       </div>
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
@@ -208,7 +208,7 @@ export const WireSphereWidget: React.FC = () => {
         if (Math.abs(rotRef.current.vY) < 0.002) rotRef.current.vY = 0.002;
       }
 
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
+      ctx.strokeStyle = 'rgba(255, 87, 1, 0.4)';
       ctx.lineWidth = 0.6;
 
       const projected: { x: number; y: number; originalZ: number }[] = [];
@@ -242,7 +242,7 @@ export const WireSphereWidget: React.FC = () => {
 
           // Compute opacity based on depth coordinate Z to create real spatial depth
           const opacity = Math.max(0.06, Math.min(0.65, (p.originalZ + 64) / 128));
-          ctx.strokeStyle = `rgba(255, 255, 255, ${opacity})`;
+          ctx.strokeStyle = `rgba(255, 87, 1, ${opacity})`;
 
           if (j === 0) {
             ctx.moveTo(p.x, p.y);
@@ -261,7 +261,7 @@ export const WireSphereWidget: React.FC = () => {
           const idx = i * pointsPerBand + j;
           const p = projected[idx];
           const opacity = Math.max(0.06, Math.min(0.65, (p.originalZ + 64) / 128));
-          ctx.strokeStyle = `rgba(255, 255, 255, ${opacity * 0.4})`;
+          ctx.strokeStyle = `rgba(255, 87, 1, ${opacity * 0.4})`;
 
           if (i === 0) {
             ctx.moveTo(p.x, p.y);
@@ -276,7 +276,7 @@ export const WireSphereWidget: React.FC = () => {
       projected.forEach((p) => {
         if (p.originalZ > 0) { // Only front side dots
           const opacity = (p.originalZ + 64) / 128;
-          ctx.fillStyle = `rgba(255, 255, 255, ${opacity * 0.95})`;
+          ctx.fillStyle = `rgba(255, 87, 1, ${opacity * 0.95})`;
           ctx.beginPath();
           ctx.arc(p.x, p.y, 2.5, 0, Math.PI * 2);
           ctx.fill();
@@ -337,7 +337,7 @@ export const WireSphereWidget: React.FC = () => {
         </div>
         <div>
           <h4 className="font-sans font-bold text-lg leading-tight text-white">VECTOR SPHERE</h4>
-          <p className="font-mono text-[9.5px] text-white/50 mt-1 max-w-[180px]">Simulated spatial mathematics utilizing linear rendering.</p>
+          <p className="font-mono text-[9.5px] text-white/50 mt-1 max-w-[180px]">Simulated spatial mathematics utilizing linear rendering. In other words, a spinning cage of math.</p>
         </div>
       </div>
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
@@ -452,7 +452,7 @@ export const ContrastPluginWidget: React.FC = () => {
             step="1"
             value={sampleTextSize}
             onChange={(e) => setSampleTextSize(Number(e.target.value))}
-            className="w-full accent-white"
+            className="w-full accent-[#FF5701]"
           />
         </div>
 
@@ -460,7 +460,7 @@ export const ContrastPluginWidget: React.FC = () => {
         <div className="flex justify-between items-center border-t border-white/10 pt-2.5">
           <div className="flex flex-col">
             <span className="font-mono text-[8px] text-white/50 uppercase">WCAG Ratio</span>
-            <span className="font-sans font-bold text-base text-white">{ratio}:1</span>
+            <span className="font-sans font-bold text-base text-[#FF5701]">{ratio}:1</span>
           </div>
           <span className={`font-mono text-[8px] tracking-wider px-2 py-0.5 border rounded-full ${status.color}`}>
             {status.label}
@@ -470,7 +470,7 @@ export const ContrastPluginWidget: React.FC = () => {
 
       <div>
         <h4 className="font-sans font-bold text-lg leading-tight text-white">CONTRAST AUDITOR</h4>
-        <p className="font-mono text-[9.5px] text-white/50 mt-1">Real-time WCAG compliance and optical analyzer sketch.</p>
+        <p className="font-mono text-[9.5px] text-white/50 mt-1">Checking if my color choices are legally compliant, so the contrast police don\'t arrest me.</p>
       </div>
     </div>
   );
@@ -544,13 +544,13 @@ export const FourierAssemblerWidget: React.FC = () => {
         y += radius * Math.sin(n * t);
 
         // Draw phasor circle
-        ctx.strokeStyle = i === 0 ? 'rgba(255, 255, 255, 0.15)' : 'rgba(255, 255, 255, 0.05)';
+        ctx.strokeStyle = i === 0 ? 'rgba(255, 87, 1, 0.25)' : 'rgba(255, 87, 1, 0.08)';
         ctx.beginPath();
         ctx.arc(originX + prevX, centerY + prevY, Math.abs(radius), 0, Math.PI * 2);
         ctx.stroke();
 
         // Draw radial line
-        ctx.strokeStyle = i === 0 ? 'rgba(255, 255, 255, 0.4)' : '#FFFFFF';
+        ctx.strokeStyle = i === 0 ? 'rgba(255, 87, 1, 0.5)' : '#FF5701';
         ctx.beginPath();
         ctx.moveTo(originX + prevX, centerY + prevY);
         ctx.lineTo(originX + x, centerY + y);
@@ -564,7 +564,7 @@ export const FourierAssemblerWidget: React.FC = () => {
       }
 
       // Draw reference laser indicator
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.25)';
+      ctx.strokeStyle = 'rgba(255, 87, 1, 0.35)';
       ctx.lineWidth = 0.7;
       ctx.setLineDash([2, 2]);
       ctx.beginPath();
@@ -574,7 +574,7 @@ export const FourierAssemblerWidget: React.FC = () => {
       ctx.setLineDash([]);
 
       // Draw synthesized output signal wave
-      ctx.strokeStyle = '#FFFFFF';
+      ctx.strokeStyle = '#FF5701';
       ctx.lineWidth = 1.6;
       ctx.beginPath();
       for (let i = 0; i < samples.length; i++) {
@@ -590,7 +590,7 @@ export const FourierAssemblerWidget: React.FC = () => {
 
       // Draw small glowing laser head
       if (samples.length > 0) {
-        ctx.fillStyle = '#FFFFFF';
+        ctx.fillStyle = '#FF5701';
         ctx.beginPath();
         ctx.arc(originX + 60, centerY + samples[0], 2.5, 0, Math.PI * 2);
         ctx.fill();
@@ -615,7 +615,7 @@ export const FourierAssemblerWidget: React.FC = () => {
           <button
             onClick={() => setWaveType('square')}
             className={`font-mono text-[8px] uppercase tracking-wider px-1.5 py-0.5 border rounded ${
-              waveType === 'square' ? 'bg-white text-black font-bold border-transparent' : 'border-white/15 text-white/50 hover:border-white/30 hover:text-white'
+              waveType === 'square' ? 'bg-[#FF5701] text-white font-bold border-transparent' : 'border-white/15 text-white/50 hover:border-white/30 hover:text-white'
             }`}
           >
             SQUARE
@@ -623,7 +623,7 @@ export const FourierAssemblerWidget: React.FC = () => {
           <button
             onClick={() => setWaveType('sawtooth')}
             className={`font-mono text-[8px] uppercase tracking-wider px-1.5 py-0.5 border rounded ${
-              waveType === 'sawtooth' ? 'bg-white text-black font-bold border-transparent' : 'border-white/15 text-white/50 hover:border-white/30 hover:text-white'
+              waveType === 'sawtooth' ? 'bg-[#FF5701] text-white font-bold border-transparent' : 'border-white/15 text-white/50 hover:border-white/30 hover:text-white'
             }`}
           >
             SAWTOOTH
@@ -649,14 +649,14 @@ export const FourierAssemblerWidget: React.FC = () => {
             step="1"
             value={harmonics}
             onChange={(e) => setHarmonics(Number(e.target.value))}
-            className="w-full accent-white"
+            className="w-full accent-[#FF5701]"
           />
         </div>
       </div>
 
       <div>
         <h4 className="font-sans font-bold text-lg leading-tight text-white">WAVE ASSEMBLER</h4>
-        <p className="font-mono text-[9.5px] text-white/50 mt-1">Interlinked radial sines synthesizing mathematical waveforms.</p>
+        <p className="font-mono text-[9.5px] text-white/50 mt-1">Interlinked radial sines synthesizing waveforms. Generating waves because it looks cool.</p>
       </div>
     </div>
   );
