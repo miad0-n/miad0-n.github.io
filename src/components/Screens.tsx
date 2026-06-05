@@ -8,10 +8,10 @@ import { motion, AnimatePresence } from 'motion/react';
 import { PROJECTS, EXPERIENCE } from '../data';
 import { Project, ContactFormModel } from '../types';
 import {
-  WaveFieldWidget,
-  WireSphereWidget,
-  ContrastPluginWidget,
-  FourierAssemblerWidget,
+  CuriosityPlugin,
+  SnackDaemonPlugin,
+  CssDebuggerPlugin,
+  SleepSchedulerPlugin,
 } from './LabWidgets';
 import { ResearchNotebook } from './ResearchNotebook';
 import { BookOpen, ChevronDown, ChevronUp, Check, Send, Sparkles } from 'lucide-react';
@@ -66,8 +66,9 @@ export const ManifestoScreen: React.FC = () => {
               animate={{ height: 'auto', opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
               transition={{ duration: 0.3, ease: 'easeInOut' }}
-              className="overflow-hidden mt-4 space-y-4 pt-4 border-t border-[#111827]/10"
+              className="overflow-hidden mt-4 pt-4 border-t border-[#111827]/10"
             >
+              <div className="space-y-4 pr-1">
               {keyPrinciples.map((p) => (
                 <div key={p.num} className="grid grid-cols-[30px_1fr] gp-3 gap-3">
                   <span className="font-mono text-[10px] text-[#FF5701] font-bold">{p.num}</span>
@@ -81,6 +82,7 @@ export const ManifestoScreen: React.FC = () => {
                   </div>
                 </div>
               ))}
+              </div>
             </motion.div>
           )}
         </AnimatePresence>
@@ -111,7 +113,7 @@ export const SelectedWorkScreen: React.FC<SelectedWorkScreenProps> = ({ onSelect
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-8 mt-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-8 mt-4 md:mt-6">
         {PROJECTS.map((project) => (
           <div
             key={project.id}
@@ -158,24 +160,24 @@ export const LabScreen: React.FC = () => {
     <div className="w-full flex-1 flex flex-col justify-between max-w-6xl mx-auto py-4 text-[#111827]">
       <div className="mb-2">
         <span className="font-mono text-[10px] text-[#FF5701] uppercase tracking-[0.25em] font-bold block">
-          Currently Exploring
+          Currently Installed
         </span>
-        <h2 className="font-serif font-bold text-[clamp(2.2rem,7vw,4rem)] leading-none tracking-tight text-[#111827] mt-1 select-none">
-          THE LAB.<br />
-          <span className="font-serif italic font-normal text-[#FF5701]">(unsupervised)</span>
+        <h2 className="font-serif font-bold text-[clamp(2.2rem,7vw,4rem)] leading-none tracking-tight text-[#111827] mt-1 select-none uppercase">
+          SYSTEM<br />
+          <span className="font-serif italic font-normal text-[#FF5701]">plugins.</span>
         </h2>
       </div>
 
-      {/* Grid of four live interactive widgets */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-4 text-white">
-        <WaveFieldWidget />
-        <WireSphereWidget />
-        <ContrastPluginWidget />
-        <FourierAssemblerWidget />
+      {/* Grid of four plugin cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
+        <CuriosityPlugin />
+        <SnackDaemonPlugin />
+        <CssDebuggerPlugin />
+        <SleepSchedulerPlugin />
       </div>
 
       <p className="font-mono text-[9px] text-[#4B5563] uppercase tracking-wider text-right block mt-3 select-none">
-        ▲ A scientifically rigorous list of what I'm into this week. Subject to change without notice.
+        ▲ All plugins running without permission. Uninstall attempts will be ignored.
       </p>
     </div>
   );
@@ -227,11 +229,11 @@ export const BioScreen: React.FC = () => {
             </div>
           </div>
           
-          <div className="flex border-t border-[#111827]/10 pt-4 gap-4">
-            <p className="font-mono text-[10.5px] leading-relaxed text-[#4B5563] w-1/2 text-justify">
+          <div className="flex flex-col sm:flex-row border-t border-[#111827]/10 pt-4 gap-4">
+            <p className="font-mono text-[10.5px] leading-relaxed text-[#4B5563] w-full sm:w-1/2 text-justify">
               Status: figuring it out, with style.
             </p>
-            <p className="font-mono text-[10.5px] leading-relaxed text-[#4B5563] w-1/2 text-justify">
+            <p className="font-mono text-[10.5px] leading-relaxed text-[#4B5563] w-full sm:w-1/2 text-justify">
               ETA on having it all together: unknown. Possibly never. We'll see.
             </p>
           </div>
@@ -268,7 +270,7 @@ export const ConnectScreen: React.FC = () => {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleFormSubmit = (e: React.FormEvent) => {
+  const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.name || !form.email || !form.message) {
       alert('Must populate all inquiry constraints.');
@@ -277,13 +279,35 @@ export const ConnectScreen: React.FC = () => {
 
     setIsLoading(true);
 
-    // Simulate reliable micro-server submission delay
-    setTimeout(() => {
-      const generatedTicket = 'VOID-' + Math.floor(100000 + Math.random() * 900000);
-      setTicketId(generatedTicket);
+    try {
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          access_key: import.meta.env.VITE_WEB3FORMS_KEY || '',
+          subject: `Portfolio Inquiry — ${form.projectType}`,
+          from_name: form.name,
+          name: form.name,
+          email: form.email,
+          project_type: form.projectType,
+          message: form.message,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        const generatedTicket = 'VOID-' + Math.floor(100000 + Math.random() * 900000);
+        setTicketId(generatedTicket);
+        setIsSubmitted(true);
+      } else {
+        alert('Transmission failed. The void rejected your message. Try again.');
+      }
+    } catch {
+      alert('Network error. The carrier pigeon got lost. Try again.');
+    } finally {
       setIsLoading(false);
-      setIsSubmitted(true);
-    }, 1200);
+    }
   };
 
   const resetForm = () => {
@@ -304,7 +328,7 @@ export const ConnectScreen: React.FC = () => {
         </span>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-stretch mt-4">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-stretch mt-4">
         {/* Left: Giant action anchors */}
         <div className="lg:col-span-6 flex flex-col justify-between">
           <div className="space-y-3">
@@ -330,7 +354,7 @@ export const ConnectScreen: React.FC = () => {
             </a>
           </div>
 
-          <div className="flex justify-between items-center border-t border-[#111827]/10 pt-4 mt-6 select-none opacity-40">
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-2 sm:gap-0 border-t border-[#111827]/10 pt-4 mt-6 select-none opacity-40">
             <span className="font-mono text-[9px] uppercase tracking-wider">EST. RECENTLY</span>
             <span className="font-mono text-[9px] uppercase tracking-wider">POWERED BY CURIOSITY</span>
           </div>

@@ -8,7 +8,7 @@ import { Project, LabItem, NavSection, ExperienceItem } from './types';
 export const SECTIONS: NavSection[] = [
   { index: 0, label: 'INTRO', tag: 'Hi, I\'m Miad' },
   { index: 1, label: 'THE_VOID', tag: 'Selected Work' },
-  { index: 2, label: 'THE_LAB', tag: 'Currently Exploring' },
+  { index: 2, label: 'SYS_PLUGINS', tag: 'Currently Installed' },
   { index: 3, label: 'BIO', tag: 'About' },
   { index: 4, label: 'CONNECT', tag: 'Say hi (or don\'t)' },
 ];

@@ -111,7 +111,7 @@ export const ResearchNotebook: React.FC = () => {
       </form>
 
       {/* Note scrolling list */}
-      <div className="flex-1 overflow-y-auto space-y-3 pr-1 max-h-[190px] md:max-h-[220px]">
+      <div className="flex-1 min-h-0 overflow-y-auto space-y-3 pr-1">
         {notes.length === 0 ? (
           <div className="h-28 flex flex-col items-center justify-center border border-dashed border-[#111827]/10 rounded bg-[#111827]/5">
             <span className="font-mono text-[9px] text-[#4B5563]/50">NOTEBOOK EMPTY</span>
@@ -129,7 +129,7 @@ export const ResearchNotebook: React.FC = () => {
                 </span>
                 <button
                   onClick={() => handleDeleteNote(note.id)}
-                  className="opacity-0 group-hover:opacity-100 text-[#4B5563]/50 hover:text-[#FF5701] transition-all duration-300"
+                  className="opacity-60 md:opacity-0 md:group-hover:opacity-100 text-[#4B5563]/50 hover:text-[#FF5701] transition-all duration-300 p-2 -m-2"
                   title="Delete log entry"
                 >
                   <Trash2 size={11} />

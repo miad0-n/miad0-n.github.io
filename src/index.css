@@ -58,3 +58,15 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--primary);
 }
+
+/* Mobile minimum font-size floor — enforces 11px for all sub-12px text */
+@media (max-width: 767.98px) {
+  [class*="text-[8px]"],
+  [class*="text-[8.5px]"],
+  [class*="text-[9px]"],
+  [class*="text-[9.5px]"],
+  [class*="text-[10px]"],
+  [class*="text-[10.5px]"] {
+    font-size: 11px !important;
+  }
+}

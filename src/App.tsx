@@ -19,7 +19,17 @@ import { Project } from './types';
 export default function App() {
   const [currentSection, setCurrentSection] = useState<number>(0);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [isMobile, setIsMobile] = useState<boolean>(false);
   const isMovingRef = useRef<boolean>(false);
+  const mobileScrollRef = useRef<HTMLElement>(null);
+
+  // Detect mobile viewport
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   // Restore active user position from localStorage on hydrate
   useEffect(() => {
@@ -36,7 +46,30 @@ export default function App() {
     const nextIdx = Math.max(0, Math.min(4, idx));
     setCurrentSection(nextIdx);
     localStorage.setItem('portfolio_active_idx', nextIdx.toString());
+    // On mobile, also programmatically scroll the snap container to the target section
+    if (mobileScrollRef.current && window.innerWidth < 768) {
+      mobileScrollRef.current.scrollTo({
+        top: nextIdx * mobileScrollRef.current.clientHeight,
+        behavior: 'smooth',
+      });
+    }
   };
+
+  // On mobile: keep currentSection in sync with native scroll position
+  useEffect(() => {
+    if (!isMobile) return;
+    const el = mobileScrollRef.current;
+    if (!el) return;
+
+    const handleScroll = () => {
+      const idx = Math.round(el.scrollTop / el.clientHeight);
+      setCurrentSection(idx);
+      localStorage.setItem('portfolio_active_idx', idx.toString());
+    };
+
+    el.addEventListener('scroll', handleScroll, { passive: true });
+    return () => el.removeEventListener('scroll', handleScroll);
+  }, [isMobile]);
 
   // Safe vertical keyboard/wheel listener hooks
   useEffect(() => {
@@ -75,7 +108,7 @@ export default function App() {
     return () => window.removeEventListener('wheel', handleWheel);
   }, [currentSection, selectedProject]);
 
-  // Touch handlers for mobile users with drift prevention
+  // Touch handlers for mobile users — disabled on mobile in favour of CSS scroll-snap
   useEffect(() => {
     let touchStartY = 0;
 
@@ -84,6 +117,8 @@ export default function App() {
     };
 
     const handleTouchEnd = (e: TouchEvent) => {
+      // On mobile, CSS scroll-snap handles section navigation natively
+      if (window.innerWidth < 768) return;
       if (selectedProject) return;
 
       const target = e.target as HTMLElement;
@@ -141,46 +176,82 @@ export default function App() {
   }, [currentSection, selectedProject]);
 
   return (
-    <div className="relative w-screen h-screen overflow-hidden bg-[#F6F6F1] select-none text-[#111827]">
+    <div className="relative w-full h-dvh overflow-hidden bg-[#F6F6F1] select-none text-[#111827]">
       {/* Navigation Headers */}
       <Header currentSection={currentSection} />
       <Sidebar currentSection={currentSection} onSectionJump={jump} />
 
-      {/* Main Animated Translating viewport */}
-      <main className="w-full h-full overflow-hidden">
-        <div
-          className="w-full h-full transition-transform duration-[900ms] will-change-transform"
+      {/* Main viewport — CSS scroll-snap on mobile, JS translateY on desktop */}
+      {isMobile ? (
+        <main
+          ref={mobileScrollRef}
+          className="w-full h-full overflow-y-scroll"
           style={{
-            transform: `translateY(-${currentSection * 100}vh)`,
-            transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)',
+            scrollSnapType: 'y mandatory',
+            WebkitOverflowScrolling: 'touch',
           }}
         >
           {/* SCREEN 01: MANIFESTO */}
-          <section className="w-screen h-screen px-6 md:px-16 pt-[104px] pb-8 flex flex-col justify-between shrink-0">
+          <section className="w-full h-dvh px-6 pt-[80px] pb-6 flex flex-col justify-between shrink-0 overflow-y-auto" style={{ scrollSnapAlign: 'start' }}>
             <ManifestoScreen />
           </section>
 
           {/* SCREEN 02: OUTCOMES */}
-          <section className="w-screen h-screen px-6 md:px-16 pt-[104px] pb-8 flex flex-col justify-between shrink-0">
+          <section className="w-full h-dvh px-6 pt-[80px] pb-6 flex flex-col justify-between shrink-0 overflow-y-auto" style={{ scrollSnapAlign: 'start' }}>
             <SelectedWorkScreen onSelectProject={setSelectedProject} />
           </section>
 
           {/* SCREEN 03: THE LAB */}
-          <section className="w-screen h-screen px-6 md:px-16 pt-[104px] pb-8 flex flex-col justify-between shrink-0">
+          <section className="w-full h-dvh px-6 pt-[80px] pb-6 flex flex-col justify-between shrink-0 overflow-y-auto" style={{ scrollSnapAlign: 'start' }}>
             <LabScreen />
           </section>
 
           {/* SCREEN 04: STUDENT BIO */}
-          <section className="w-screen h-screen px-6 md:px-16 pt-[104px] pb-8 flex flex-col justify-between shrink-0">
+          <section className="w-full h-dvh px-6 pt-[80px] pb-6 flex flex-col justify-between shrink-0 overflow-y-auto" style={{ scrollSnapAlign: 'start' }}>
             <BioScreen />
           </section>
 
           {/* SCREEN 05: INQUIRY */}
-          <section className="w-screen h-screen px-6 md:px-16 pt-[104px] pb-8 flex flex-col justify-between shrink-0">
+          <section className="w-full h-dvh px-6 pt-[80px] pb-6 flex flex-col justify-between shrink-0 overflow-y-auto" style={{ scrollSnapAlign: 'start' }}>
             <ConnectScreen />
           </section>
-        </div>
-      </main>
+        </main>
+      ) : (
+        <main className="w-full h-full overflow-hidden">
+          <div
+            className="w-full h-full transition-transform duration-[900ms] will-change-transform"
+            style={{
+              transform: `translateY(-${currentSection * 100}dvh)`,
+              transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)',
+            }}
+          >
+            {/* SCREEN 01: MANIFESTO */}
+            <section className="w-full h-dvh px-6 md:px-16 pt-[80px] md:pt-[104px] pb-6 md:pb-8 flex flex-col justify-between shrink-0 overflow-y-auto">
+              <ManifestoScreen />
+            </section>
+
+            {/* SCREEN 02: OUTCOMES */}
+            <section className="w-full h-dvh px-6 md:px-16 pt-[80px] md:pt-[104px] pb-6 md:pb-8 flex flex-col justify-between shrink-0 overflow-y-auto">
+              <SelectedWorkScreen onSelectProject={setSelectedProject} />
+            </section>
+
+            {/* SCREEN 03: THE LAB */}
+            <section className="w-full h-dvh px-6 md:px-16 pt-[80px] md:pt-[104px] pb-6 md:pb-8 flex flex-col justify-between shrink-0 overflow-y-auto">
+              <LabScreen />
+            </section>
+
+            {/* SCREEN 04: STUDENT BIO */}
+            <section className="w-full h-dvh px-6 md:px-16 pt-[80px] md:pt-[104px] pb-6 md:pb-8 flex flex-col justify-between shrink-0 overflow-y-auto">
+              <BioScreen />
+            </section>
+
+            {/* SCREEN 05: INQUIRY */}
+            <section className="w-full h-dvh px-6 md:px-16 pt-[80px] md:pt-[104px] pb-6 md:pb-8 flex flex-col justify-between shrink-0 overflow-y-auto">
+              <ConnectScreen />
+            </section>
+          </div>
+        </main>
+      )}
 
       {/* Slide-over Detailed Case Studies Drawer */}
       <AnimatePresence>
