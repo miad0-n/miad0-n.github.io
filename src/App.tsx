@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { AnimatePresence } from 'motion/react';
 import { Header, Sidebar } from './components/Navigation';
 import {
@@ -15,6 +15,7 @@ import {
 } from './components/Screens';
 import { ProjectDetail } from './components/ProjectDetail';
 import { Project } from './types';
+import { LoadingScreen } from './components/LoadingScreen';
 
 export default function App() {
   const [currentSection, setCurrentSection] = useState<number>(0);
@@ -23,6 +24,21 @@ export default function App() {
   const [isDark, setIsDark] = useState<boolean>(false);
   const isMovingRef = useRef<boolean>(false);
   const mobileScrollRef = useRef<HTMLElement>(null);
+
+  // ── Loading screen — once per session ───────────────────────────
+  const [showLoader, setShowLoader] = useState<boolean>(() => {
+    try {
+      return !sessionStorage.getItem('miad_loaded');
+    } catch {
+      return false;
+    }
+  });
+
+  const handleLoaderComplete = useCallback(() => {
+    try { sessionStorage.setItem('miad_loaded', '1'); } catch {}
+    // Loader fades itself out; unmount after it completes
+    setTimeout(() => setShowLoader(false), 50);
+  }, []);
 
   // Apply saved or OS-preferred theme on mount
   useEffect(() => {
@@ -48,21 +64,9 @@ export default function App() {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // Restore active user position from localStorage on hydrate
-  useEffect(() => {
-    const saved = localStorage.getItem('portfolio_active_idx');
-    if (saved) {
-      const idx = parseInt(saved, 10);
-      if (!isNaN(idx) && idx >= 0 && idx < 5) {
-        setCurrentSection(idx);
-      }
-    }
-  }, []);
-
   const jump = (idx: number) => {
     const nextIdx = Math.max(0, Math.min(4, idx));
     setCurrentSection(nextIdx);
-    localStorage.setItem('portfolio_active_idx', nextIdx.toString());
     // On mobile, also programmatically scroll the snap container to the target section
     if (mobileScrollRef.current && window.innerWidth < 768) {
       mobileScrollRef.current.scrollTo({
@@ -193,6 +197,11 @@ export default function App() {
   }, [currentSection, selectedProject]);
 
   return (
+    <>
+      {/* Loading screen overlay — unmounts after it fades out */}
+      {showLoader && <LoadingScreen onComplete={handleLoaderComplete} />}
+
+      {/* Site — always at full opacity; loader fades out on top */}
     <div className="relative w-full h-dvh overflow-hidden bg-[var(--c-bg)] select-none text-[var(--c-text)] transition-colors duration-400">
       {/* Navigation Headers */}
       <Header currentSection={currentSection} onToggleTheme={toggleTheme} isDark={isDark} />
@@ -280,5 +289,6 @@ export default function App() {
         )}
       </AnimatePresence>
     </div>
+    </>
   );
 }

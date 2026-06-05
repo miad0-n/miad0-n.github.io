@@ -42,7 +42,7 @@ const PLUGINS: PluginData[] = [
       { label: 'HUNGER', value: '94%', percent: 94 },
       { label: 'SNACKS LEFT', value: '2', percent: 15 },
     ],
-    status: 'ACTIVE — next trigger: 12min',
+    status: 'ACTIVE',
     statusType: 'warning',
     uptime: 'since birth',
   },
@@ -147,12 +147,12 @@ const PluginCard: React.FC<{ plugin: PluginData; index: number }> = ({ plugin, i
               isHovered ? 'opacity-100' : 'opacity-0'
             } ${
               plugin.statusType === 'running'
-                ? 'text-emerald-600 border-emerald-200 bg-emerald-50 dark:bg-emerald-950 dark:border-emerald-800'
+                ? 'text-emerald-700 border-emerald-300 bg-emerald-100 dark:text-emerald-400 dark:bg-emerald-950 dark:border-emerald-800'
                 : plugin.statusType === 'warning'
-                ? 'text-amber-600 border-amber-200 bg-amber-50 dark:bg-amber-950 dark:border-amber-800'
+                ? 'text-amber-700 border-amber-300 bg-amber-100 dark:text-amber-400 dark:bg-amber-950 dark:border-amber-800'
                 : plugin.statusType === 'error'
-                ? 'text-rose-600 border-rose-200 bg-rose-50 dark:bg-rose-950 dark:border-rose-800'
-                : 'text-[var(--c-text)]/40 border-[var(--c-border)] bg-[var(--c-text)]/5'
+                ? 'text-rose-700 border-rose-300 bg-rose-100 dark:text-rose-400 dark:bg-rose-950 dark:border-rose-800'
+                : 'text-[var(--c-text)]/50 border-[var(--c-border)] bg-[var(--c-text)]/5'
             }`}
           >
             {plugin.status}
