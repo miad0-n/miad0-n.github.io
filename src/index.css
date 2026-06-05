@@ -18,7 +18,16 @@
   --ease-custom: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+/* ─── Light mode (default) ─────────────────────────────────────── */
 :root {
+  --c-bg:      #F6F6F1;
+  --c-surface: #FFFFFF;
+  --c-text:    #111827;
+  --c-muted:   #4B5563;
+  --c-border:  rgba(17, 24, 39, 0.1);
+  --c-primary: #FF5701;
+
+  /* legacy aliases kept for body{} */
   --primary: #FF5701;
   --secondary: #F6F6F1;
   --surface: #FFFFFF;
@@ -31,17 +40,28 @@
   --font-mono: 'JetBrains Mono', monospace;
 }
 
+/* ─── Dark mode overrides (activated by .dark on <html>) ─────── */
+.dark {
+  --c-bg:      #0F0F0E;
+  --c-surface: #1C1C1A;
+  --c-text:    #F0EFE9;
+  --c-muted:   #9CA3AF;
+  --c-border:  rgba(240, 239, 233, 0.10);
+  --c-primary: #FF5701;
+}
+
 body {
-  background-color: var(--secondary);
-  color: var(--text);
+  background-color: var(--c-bg);
+  color: var(--c-text);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   overflow: hidden;
+  transition: background-color 0.4s ease, color 0.4s ease;
 }
 
 .stroke-text {
   -webkit-text-fill-color: transparent;
-  -webkit-text-stroke: 1px #111827;
+  -webkit-text-stroke: 1px var(--c-text);
 }
 
 /* Beautiful custom light scrollbar */

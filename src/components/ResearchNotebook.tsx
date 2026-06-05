@@ -76,18 +76,18 @@ export const ResearchNotebook: React.FC = () => {
   };
 
   return (
-    <div className="w-full h-full flex flex-col bg-white border border-[#111827]/10 p-5 rounded-lg shadow-sm select-none text-[#111827]">
-      <div className="flex justify-between items-center border-b border-[#111827]/10 pb-3 mb-4">
+    <div className="w-full h-full flex flex-col bg-[var(--c-surface)] border border-[var(--c-border)] p-5 rounded-lg shadow-sm select-none text-[var(--c-text)]">
+      <div className="flex justify-between items-center border-b border-[var(--c-border)] pb-3 mb-4">
         <div className="flex items-center gap-2">
           <PenTool size={13} className="text-[#FF5701]" />
-          <h4 className="font-mono text-[10px] tracking-wider text-[#111827] uppercase font-bold">
+          <h4 className="font-mono text-[10px] tracking-wider text-[var(--c-text)] uppercase font-bold">
             SCRATCHPAD.LOG
           </h4>
         </div>
         {notes.length > 0 && (
           <button
             onClick={handleClearAll}
-            className="font-mono text-[8px] text-[#4B5563] hover:text-[#FF5701] uppercase tracking-widest border border-dashed border-[#111827]/10 hover:border-[#FF5701]/30 transition-all duration-300 px-2 py-0.5"
+            className="font-mono text-[8px] text-[var(--c-muted)] hover:text-[#FF5701] uppercase tracking-widest border border-dashed border-[var(--c-border)] hover:border-[#FF5701]/30 transition-all duration-300 px-2 py-0.5"
           >
             CLEAR ALL
           </button>
@@ -100,7 +100,7 @@ export const ResearchNotebook: React.FC = () => {
           value={newContent}
           onChange={(e) => setNewContent(e.target.value)}
           placeholder="Append live research observations here..."
-          className="w-full h-20 bg-[#111827]/5 hover:bg-[#111827]/10 focus:bg-[#111827]/5 font-mono text-[10px] p-2.5 border border-[#111827]/10 rounded placeholder-[#111827]/30 focus:outline-none focus:border-[#FF5701] transition-all resize-none leading-relaxed text-[#111827]"
+          className="w-full h-20 bg-[var(--c-text)]/5 hover:bg-[var(--c-text)]/10 focus:bg-[var(--c-text)]/5 font-mono text-[10px] p-2.5 border border-[var(--c-border)] rounded placeholder-[var(--c-muted)]/60 focus:outline-none focus:border-[#FF5701] transition-all resize-none leading-relaxed text-[var(--c-text)]"
         />
         <button
           type="submit"
@@ -113,29 +113,29 @@ export const ResearchNotebook: React.FC = () => {
       {/* Note scrolling list */}
       <div className="flex-1 min-h-0 overflow-y-auto space-y-3 pr-1">
         {notes.length === 0 ? (
-          <div className="h-28 flex flex-col items-center justify-center border border-dashed border-[#111827]/10 rounded bg-[#111827]/5">
-            <span className="font-mono text-[9px] text-[#4B5563]/50">NOTEBOOK EMPTY</span>
-            <span className="font-mono text-[8px] text-[#4B5563]/30 mt-1">NO OBSERVED OBSERVATIONS</span>
+          <div className="h-28 flex flex-col items-center justify-center border border-dashed border-[var(--c-border)] rounded bg-[var(--c-text)]/5">
+            <span className="font-mono text-[9px] text-[var(--c-muted)]/70">NOTEBOOK EMPTY</span>
+            <span className="font-mono text-[8px] text-[var(--c-muted)]/40 mt-1">NO OBSERVED OBSERVATIONS</span>
           </div>
         ) : (
           notes.map((note) => (
             <div
               key={note.id}
-              className="group p-3 border border-[#111827]/5 hover:border-[#FF5701]/20 rounded bg-[#111827]/5 hover:bg-[#111827]/10 transition-all duration-300"
+              className="group p-3 border border-[var(--c-border)] hover:border-[#FF5701]/20 rounded bg-[var(--c-text)]/5 hover:bg-[var(--c-text)]/10 transition-all duration-300"
             >
               <div className="flex justify-between items-center mb-1.5">
-                <span className="font-mono text-[8px] text-[#4B5563]/55 font-bold">
+                <span className="font-mono text-[8px] text-[var(--c-muted)]/70 font-bold">
                   {note.timestamp}
                 </span>
                 <button
                   onClick={() => handleDeleteNote(note.id)}
-                  className="opacity-60 md:opacity-0 md:group-hover:opacity-100 text-[#4B5563]/50 hover:text-[#FF5701] transition-all duration-300 p-2 -m-2"
+                  className="opacity-60 md:opacity-0 md:group-hover:opacity-100 text-[var(--c-muted)]/50 hover:text-[#FF5701] transition-all duration-300 p-2 -m-2"
                   title="Delete log entry"
                 >
                   <Trash2 size={11} />
                 </button>
               </div>
-              <p className="font-mono text-[9.5px] leading-relaxed text-[#111827]/90 whitespace-pre-line text-left">
+              <p className="font-mono text-[9.5px] leading-relaxed text-[var(--c-text)]/90 whitespace-pre-line text-left">
                 {note.content}
               </p>
             </div>

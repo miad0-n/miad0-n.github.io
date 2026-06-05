@@ -86,7 +86,7 @@ const ProgressBar: React.FC<{ percent: number; color?: string }> = ({ percent, c
   }, [percent]);
 
   return (
-    <div className="w-full h-1.5 bg-[#111827]/5 rounded-full overflow-hidden">
+    <div className="w-full h-1.5 bg-[var(--c-text)]/5 rounded-full overflow-hidden">
       <div
         className="h-full rounded-full transition-all duration-[1200ms] ease-out"
         style={{
@@ -106,7 +106,7 @@ const StatusDot: React.FC<{ type: PluginData['statusType'] }> = ({ type }) => {
     running: 'bg-emerald-500',
     warning: 'bg-amber-500',
     error: 'bg-rose-500',
-    idle: 'bg-[#111827]/20',
+    idle: 'bg-[var(--c-text)]/20',
   };
 
   return (
@@ -129,7 +129,7 @@ const PluginCard: React.FC<{ plugin: PluginData; index: number }> = ({ plugin, i
 
   return (
     <div
-      className="w-full h-full bg-white border border-[#111827]/10 rounded-lg p-5 flex flex-col justify-between group select-none hover:border-[#FF5701]/30 transition-all duration-300 shadow-sm hover:shadow-md"
+      className="w-full h-full bg-[var(--c-surface)] border border-[var(--c-border)] rounded-lg p-5 flex flex-col justify-between group select-none hover:border-[#FF5701]/30 transition-all duration-300 shadow-sm hover:shadow-md"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -138,7 +138,7 @@ const PluginCard: React.FC<{ plugin: PluginData; index: number }> = ({ plugin, i
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
             <StatusDot type={plugin.statusType} />
-            <span className="font-mono text-[9px] text-[#111827]/40 uppercase tracking-wider font-semibold">
+            <span className="font-mono text-[9px] text-[var(--c-text)]/40 uppercase tracking-wider font-semibold">
               {String(index + 1).padStart(2, '0')} / PLUGIN
             </span>
           </div>
@@ -147,12 +147,12 @@ const PluginCard: React.FC<{ plugin: PluginData; index: number }> = ({ plugin, i
               isHovered ? 'opacity-100' : 'opacity-0'
             } ${
               plugin.statusType === 'running'
-                ? 'text-emerald-600 border-emerald-200 bg-emerald-50'
+                ? 'text-emerald-600 border-emerald-200 bg-emerald-50 dark:bg-emerald-950 dark:border-emerald-800'
                 : plugin.statusType === 'warning'
-                ? 'text-amber-600 border-amber-200 bg-amber-50'
+                ? 'text-amber-600 border-amber-200 bg-amber-50 dark:bg-amber-950 dark:border-amber-800'
                 : plugin.statusType === 'error'
-                ? 'text-rose-600 border-rose-200 bg-rose-50'
-                : 'text-[#111827]/40 border-[#111827]/10 bg-[#111827]/5'
+                ? 'text-rose-600 border-rose-200 bg-rose-50 dark:bg-rose-950 dark:border-rose-800'
+                : 'text-[var(--c-text)]/40 border-[var(--c-border)] bg-[var(--c-text)]/5'
             }`}
           >
             {plugin.status}
@@ -160,31 +160,31 @@ const PluginCard: React.FC<{ plugin: PluginData; index: number }> = ({ plugin, i
         </div>
 
         {/* Plugin name & version */}
-        <h4 className="font-mono font-bold text-sm md:text-base text-[#111827] leading-tight">
+        <h4 className="font-mono font-bold text-sm md:text-base text-[var(--c-text)] leading-tight">
           {plugin.name}
         </h4>
         <div className="flex items-center gap-2 mt-1">
           <span className="font-mono text-[9px] text-[#FF5701] font-semibold">
             {plugin.version}
           </span>
-          <span className="font-mono text-[8px] text-[#111827]/30">
+          <span className="font-mono text-[8px] text-[var(--c-text)]/30">
             ({plugin.stability})
           </span>
         </div>
 
         {/* Description */}
-        <p className="font-mono text-[9.5px] leading-relaxed text-[#4B5563] mt-3 text-justify">
+        <p className="font-mono text-[9.5px] leading-relaxed text-[var(--c-muted)] mt-3 text-justify">
           {plugin.description}
         </p>
       </div>
 
       {/* Stats & Progress */}
-      <div className="mt-4 space-y-2.5 border-t border-[#111827]/5 pt-3">
+      <div className="mt-4 space-y-2.5 border-t border-[var(--c-border)] pt-3">
         {plugin.stats.map((stat) => (
           <div key={stat.label}>
-            <div className="flex justify-between font-mono text-[8px] text-[#111827]/50 uppercase tracking-wider mb-1">
+            <div className="flex justify-between font-mono text-[8px] text-[var(--c-text)]/50 uppercase tracking-wider mb-1">
               <span className="font-semibold">{stat.label}</span>
-              <span className="text-[#111827] font-bold">{stat.value}</span>
+              <span className="text-[var(--c-text)] font-bold">{stat.value}</span>
             </div>
             <ProgressBar
               percent={stat.percent}
@@ -192,7 +192,7 @@ const PluginCard: React.FC<{ plugin: PluginData; index: number }> = ({ plugin, i
                 stat.percent > 80
                   ? '#FF5701'
                   : stat.percent > 40
-                  ? '#111827'
+                  ? 'var(--c-text)'
                   : stat.percent > 0
                   ? '#9CA3AF'
                   : '#E5E7EB'
@@ -204,10 +204,10 @@ const PluginCard: React.FC<{ plugin: PluginData; index: number }> = ({ plugin, i
         {/* Uptime footer */}
         {plugin.uptime && (
           <div className="flex justify-between items-center pt-1">
-            <span className="font-mono text-[8px] text-[#111827]/30 uppercase tracking-wider">
+            <span className="font-mono text-[8px] text-[var(--c-text)]/30 uppercase tracking-wider">
               UPTIME
             </span>
-            <span className="font-mono text-[8px] text-[#111827]/50 font-semibold">
+            <span className="font-mono text-[8px] text-[var(--c-text)]/50 font-semibold">
               {plugin.uptime}
             </span>
           </div>

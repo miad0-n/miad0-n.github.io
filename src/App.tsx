@@ -20,8 +20,25 @@ export default function App() {
   const [currentSection, setCurrentSection] = useState<number>(0);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [isMobile, setIsMobile] = useState<boolean>(false);
+  const [isDark, setIsDark] = useState<boolean>(false);
   const isMovingRef = useRef<boolean>(false);
   const mobileScrollRef = useRef<HTMLElement>(null);
+
+  // Apply saved or OS-preferred theme on mount
+  useEffect(() => {
+    const saved = localStorage.getItem('portfolio_theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const dark = saved === 'dark' || (!saved && prefersDark);
+    setIsDark(dark);
+    document.documentElement.classList.toggle('dark', dark);
+  }, []);
+
+  const toggleTheme = () => {
+    const next = !isDark;
+    setIsDark(next);
+    document.documentElement.classList.toggle('dark', next);
+    localStorage.setItem('portfolio_theme', next ? 'dark' : 'light');
+  };
 
   // Detect mobile viewport
   useEffect(() => {
@@ -132,7 +149,7 @@ export default function App() {
       if (Math.abs(diff) > 60) {
         if (isMovingRef.current) return;
         isMovingRef.current = true;
-        
+
         if (diff > 0) {
           jump(currentSection + 1);
         } else {
@@ -176,9 +193,9 @@ export default function App() {
   }, [currentSection, selectedProject]);
 
   return (
-    <div className="relative w-full h-dvh overflow-hidden bg-[#F6F6F1] select-none text-[#111827]">
+    <div className="relative w-full h-dvh overflow-hidden bg-[var(--c-bg)] select-none text-[var(--c-text)] transition-colors duration-400">
       {/* Navigation Headers */}
-      <Header currentSection={currentSection} />
+      <Header currentSection={currentSection} onToggleTheme={toggleTheme} isDark={isDark} />
       <Sidebar currentSection={currentSection} onSectionJump={jump} />
 
       {/* Main viewport — CSS scroll-snap on mobile, JS translateY on desktop */}
