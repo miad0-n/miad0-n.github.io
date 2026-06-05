@@ -70,7 +70,7 @@ interface SidebarProps {
 
 export const Sidebar: React.FC<SidebarProps> = ({ currentSection, onSectionJump }) => {
   return (
-    <aside className="fixed right-6 md:right-12 top-1/2 -translate-y-1/2 z-40 flex flex-col gap-6 items-end pointer-events-none">
+    <aside className="hidden md:flex fixed right-8 md:right-12 top-1/2 -translate-y-1/2 z-40 flex-col gap-6 items-end pointer-events-none">
       {SECTIONS.map((section) => {
         const isActive = currentSection === section.index;
         return (
