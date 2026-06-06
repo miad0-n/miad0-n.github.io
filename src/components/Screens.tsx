@@ -17,7 +17,8 @@ import {
   VoidTyperPlugin,
 } from './LabWidgets';
 import { ResearchNotebook } from './ResearchNotebook';
-import { BookOpen, ChevronDown, ChevronUp, Check, Send, Sparkles } from 'lucide-react';
+import { QueryMiad } from './QueryMiad';
+import { BookOpen, ChevronDown, ChevronUp, Check, Send, Sparkles, Terminal } from 'lucide-react';
 
 // ==========================================
 // SCREEN 1: MANIFESTO (Introduction)
@@ -273,9 +274,10 @@ export const BioScreen: React.FC = () => {
 };
 
 // ==========================================
-// SCREEN 5: CONNECT (Inquiry Form)
+// SCREEN 5: CONNECT (Inquiry Form + AI Query)
 // ==========================================
 export const ConnectScreen: React.FC = () => {
+  const [activeTab, setActiveTab] = useState<'form' | 'ai'>('form');
   const [form, setForm] = useState<ContactFormModel>({
     name: '',
     email: '',
@@ -395,137 +397,187 @@ export const ConnectScreen: React.FC = () => {
           </div>
         </div>
 
-        {/* Right: Functional Inquiry Form Box */}
-        <div className="lg:col-span-6 bg-[var(--c-surface)] border border-[var(--c-border)] p-6 md:p-8 rounded-xl shadow-sm flex flex-col justify-center">
-          <AnimatePresence mode="wait">
-            {!isSubmitted ? (
-              <motion.form
-                key="contact-form"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                onSubmit={handleFormSubmit}
-                className="space-y-4 text-[var(--c-text)]"
-              >
-                <div className="flex items-center gap-1.5 border-b border-[var(--c-border)] pb-3 mb-2 select-none">
-                  <Sparkles size={14} className="text-[#FF5701]" />
-                  <h3 className="font-mono text-[10px] uppercase font-bold tracking-widest text-[var(--c-text)]">
-                    SECURE_INQUIRY_FORM
-                  </h3>
-                </div>
+        {/* Right: Tab-switched panel — Inquiry Form OR AI Terminal */}
+        <div className="lg:col-span-6 bg-[var(--c-surface)] border border-[var(--c-border)] rounded-xl shadow-sm flex flex-col overflow-hidden">
+          {/* Tab bar */}
+          <div className="flex border-b border-[var(--c-border)] shrink-0">
+            <button
+              onClick={() => setActiveTab('form')}
+              className={`flex items-center gap-1.5 px-4 py-3 font-mono text-[9px] uppercase tracking-widest transition-all duration-200 cursor-pointer border-r border-[var(--c-border)] ${
+                activeTab === 'form'
+                  ? 'text-[var(--c-text)] bg-[var(--c-text)]/3'
+                  : 'text-[var(--c-muted)] hover:text-[var(--c-text)]'
+              }`}
+            >
+              <Sparkles size={11} className={activeTab === 'form' ? 'text-[#FF5701]' : ''} />
+              INQUIRY_FORM
+            </button>
+            <button
+              onClick={() => setActiveTab('ai')}
+              className={`flex items-center gap-1.5 px-4 py-3 font-mono text-[9px] uppercase tracking-widest transition-all duration-200 cursor-pointer ${
+                activeTab === 'ai'
+                  ? 'text-[var(--c-text)] bg-[var(--c-text)]/3'
+                  : 'text-[var(--c-muted)] hover:text-[var(--c-text)]'
+              }`}
+            >
+              <Terminal size={11} className={activeTab === 'ai' ? 'text-[#FF5701]' : ''} />
+              QUERY_MIAD.EXE
+              {/* little badge */}
+              <span className="ml-1 font-mono text-[7px] text-[#FF5701] border border-[#FF5701]/30 bg-[#FF5701]/5 rounded-full px-1.5 py-0.5 leading-none">
+                AI
+              </span>
+            </button>
+          </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="flex flex-col gap-1">
-                    <label className="font-mono text-[9px] text-[var(--c-text)]/50 uppercase font-bold">NAME</label>
-                    <input
-                      type="text"
-                      name="name"
-                      required
-                      value={form.name}
-                      onChange={handleInputChange}
-                      placeholder="e.g. Alexis Scribe"
-                      className="w-full bg-[var(--c-text)]/5 focus:bg-[var(--c-surface)] font-mono text-[10.5px] p-2.5 border border-[var(--c-border)] rounded focus:outline-none focus:border-[#FF5701] text-[var(--c-text)]"
-                    />
-                  </div>
-
-                  <div className="flex flex-col gap-1">
-                    <label className="font-mono text-[9px] text-[var(--c-text)]/50 uppercase font-bold">EMAIL</label>
-                    <input
-                      type="email"
-                      name="email"
-                      required
-                      value={form.email}
-                      onChange={handleInputChange}
-                      placeholder="scribe@example.com"
-                      className="w-full bg-[var(--c-text)]/5 focus:bg-[var(--c-surface)] font-mono text-[10.5px] p-2.5 border border-[var(--c-border)] rounded focus:outline-none focus:border-[#FF5701] text-[var(--c-text)]"
-                    />
-                  </div>
-                </div>
-
-                <div className="flex flex-col gap-1">
-                  <label className="font-mono text-[9px] text-[var(--c-text)]/50 uppercase font-bold">PROJECT TYPE</label>
-                  <select
-                    name="projectType"
-                    value={form.projectType}
-                    onChange={handleInputChange}
-                    className="w-full bg-[var(--c-text)]/5 focus:bg-[var(--c-surface)] font-mono text-[10.5px] p-2.5 border border-[var(--c-border)] rounded focus:outline-none focus:border-[#FF5701] text-[var(--c-text)]"
-                  >
-                    <option value="General Chit-Chat">General Chit-Chat (snacks and coffee)</option>
-                    <option value="UI/UX Design">UI/UX Web Design (making things pretty)</option>
-                    <option value="Creative Tech Dev">GLSL / WebGL Prototyping (spinning math)</option>
-                    <option value="Custom Shell Architecture">Brutalist Shell Development (bloatware-free)</option>
-                  </select>
-                </div>
-
-                <div className="flex flex-col gap-1">
-                  <label className="font-mono text-[9px] text-[var(--c-text)]/50 uppercase font-bold">INQUIRY MEMORANDUM</label>
-                  <textarea
-                    name="message"
-                    required
-                    value={form.message}
-                    onChange={handleInputChange}
-                    placeholder="e.g. 'Hey, I love your empty portfolio! Can you build me an app that does nothing?'"
-                    className="w-full h-24 bg-[var(--c-text)]/5 focus:bg-[var(--c-surface)] font-mono text-[10.5px] p-2.5 border border-[var(--c-border)] rounded focus:outline-none focus:border-[#FF5701] resize-none text-[var(--c-text)] leading-relaxed"
-                  />
-                </div>
-
-                <button
-                  type="submit"
-                  disabled={isLoading}
-                  className="w-full h-11 bg-[#FF5701] hover:bg-[#e04c00] disabled:bg-[#FF5701]/30 text-white flex items-center justify-center gap-2 font-mono text-[10px] tracking-widest font-bold uppercase rounded cursor-pointer transition-colors duration-300"
+          {/* Panel content */}
+          <div className="flex-1 p-6 md:p-8 min-h-0 overflow-hidden flex flex-col">
+            <AnimatePresence mode="wait">
+              {activeTab === 'form' ? (
+                <motion.div
+                  key="form-panel"
+                  initial={{ opacity: 0, x: -8 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -8 }}
+                  transition={{ duration: 0.2 }}
+                  className="flex-1 flex flex-col"
                 >
-                  {isLoading ? (
-                    'SUBMITTING ENTRANCE LOG...'
-                  ) : (
-                    <>
-                      TRANSMIT DISCOVERY RECORD <Send size={11} />
-                    </>
-                  )}
-                </button>
-              </motion.form>
-            ) : (
-              <motion.div
-                key="submission-success"
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0 }}
-                className="text-center py-6 flex flex-col items-center gap-4 text-[var(--c-text)]"
-              >
-                <div className="w-14 h-14 bg-[#FF5701]/10 border border-[#FF5701]/30 text-[#FF5701] rounded-full flex items-center justify-center mb-2 animate-bounce">
-                  <Check size={26} />
-                </div>
-                <div>
-                  <h4 className="font-serif font-bold text-2xl text-[var(--c-text)]">
-                    TRANSMISSION SUCCESSFUL
-                  </h4>
-                  <p className="font-mono text-[10px] text-[var(--c-muted)] mt-1 uppercase tracking-wider">
-                    INBOX QUEUED - SEATTLE TIME APPRECIATED
-                  </p>
-                </div>
+                  <AnimatePresence mode="wait">
+                    {!isSubmitted ? (
+                      <motion.form
+                        key="contact-form"
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        onSubmit={handleFormSubmit}
+                        className="space-y-4 text-[var(--c-text)] flex-1 flex flex-col justify-center"
+                      >
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                          <div className="flex flex-col gap-1">
+                            <label className="font-mono text-[9px] text-[var(--c-text)]/50 uppercase font-bold">NAME</label>
+                            <input
+                              type="text"
+                              name="name"
+                              required
+                              value={form.name}
+                              onChange={handleInputChange}
+                              placeholder="e.g. Alexis Scribe"
+                              className="w-full bg-[var(--c-text)]/5 focus:bg-[var(--c-surface)] font-mono text-[10.5px] p-2.5 border border-[var(--c-border)] rounded focus:outline-none focus:border-[#FF5701] text-[var(--c-text)]"
+                            />
+                          </div>
 
-                {/* Printed mock index ticket */}
-                <div className="w-full bg-[var(--c-text)]/5 border border-[var(--c-border)] rounded p-4 text-left font-mono text-[10px] space-y-1.5 my-3 relative shadow-sm select-all">
-                  <div className="flex justify-between border-b border-[var(--c-border)] pb-1.5 mb-2">
-                    <span className="font-bold text-[var(--c-text)]">VOID ID INDEXER</span>
-                    <span className="text-[#FF5701] font-bold">{ticketId}</span>
-                  </div>
-                  <div className="grid grid-cols-[80px_1fr] gap-x-2 text-[var(--c-muted)]">
-                    <span>SENDER_VAL:</span> <span className="text-[var(--c-text)] font-semibold">{form.name}</span>
-                    <span>ORIGIN_EM:</span> <span className="text-[var(--c-text)] font-semibold">{form.email}</span>
-                    <span>DEPT_CHG:</span> <span className="text-[var(--c-text)] font-semibold">{form.projectType}</span>
-                    <span>TIMESTAMP:</span> <span className="text-[var(--c-text)] font-semibold">2026-06-05 UTC</span>
-                  </div>
-                </div>
+                          <div className="flex flex-col gap-1">
+                            <label className="font-mono text-[9px] text-[var(--c-text)]/50 uppercase font-bold">EMAIL</label>
+                            <input
+                              type="email"
+                              name="email"
+                              required
+                              value={form.email}
+                              onChange={handleInputChange}
+                              placeholder="scribe@example.com"
+                              className="w-full bg-[var(--c-text)]/5 focus:bg-[var(--c-surface)] font-mono text-[10.5px] p-2.5 border border-[var(--c-border)] rounded focus:outline-none focus:border-[#FF5701] text-[var(--c-text)]"
+                            />
+                          </div>
+                        </div>
 
-                <button
-                  onClick={resetForm}
-                  className="font-mono text-[9px] uppercase tracking-widest text-[var(--c-muted)] hover:text-[#FF5701] border-b border-dashed border-[var(--c-border)] hover:border-[#FF5701] pb-0.5 mt-2 transition-all cursor-pointer"
+                        <div className="flex flex-col gap-1">
+                          <label className="font-mono text-[9px] text-[var(--c-text)]/50 uppercase font-bold">PROJECT TYPE</label>
+                          <select
+                            name="projectType"
+                            value={form.projectType}
+                            onChange={handleInputChange}
+                            className="w-full bg-[var(--c-text)]/5 focus:bg-[var(--c-surface)] font-mono text-[10.5px] p-2.5 border border-[var(--c-border)] rounded focus:outline-none focus:border-[#FF5701] text-[var(--c-text)]"
+                          >
+                            <option value="General Chit-Chat">General Chit-Chat (snacks and coffee)</option>
+                            <option value="UI/UX Design">UI/UX Web Design (making things pretty)</option>
+                            <option value="Creative Tech Dev">GLSL / WebGL Prototyping (spinning math)</option>
+                            <option value="Custom Shell Architecture">Brutalist Shell Development (bloatware-free)</option>
+                          </select>
+                        </div>
+
+                        <div className="flex flex-col gap-1">
+                          <label className="font-mono text-[9px] text-[var(--c-text)]/50 uppercase font-bold">INQUIRY MEMORANDUM</label>
+                          <textarea
+                            name="message"
+                            required
+                            value={form.message}
+                            onChange={handleInputChange}
+                            placeholder="e.g. 'Hey, I love your empty portfolio! Can you build me an app that does nothing?'"
+                            className="w-full h-24 bg-[var(--c-text)]/5 focus:bg-[var(--c-surface)] font-mono text-[10.5px] p-2.5 border border-[var(--c-border)] rounded focus:outline-none focus:border-[#FF5701] resize-none text-[var(--c-text)] leading-relaxed"
+                          />
+                        </div>
+
+                        <button
+                          type="submit"
+                          disabled={isLoading}
+                          className="w-full h-11 bg-[#FF5701] hover:bg-[#e04c00] disabled:bg-[#FF5701]/30 text-white flex items-center justify-center gap-2 font-mono text-[10px] tracking-widest font-bold uppercase rounded cursor-pointer transition-colors duration-300"
+                        >
+                          {isLoading ? (
+                            'SUBMITTING ENTRANCE LOG...'
+                          ) : (
+                            <>
+                              TRANSMIT DISCOVERY RECORD <Send size={11} />
+                            </>
+                          )}
+                        </button>
+                      </motion.form>
+                    ) : (
+                      <motion.div
+                        key="submission-success"
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="text-center py-6 flex flex-col items-center gap-4 text-[var(--c-text)] flex-1 justify-center"
+                      >
+                        <div className="w-14 h-14 bg-[#FF5701]/10 border border-[#FF5701]/30 text-[#FF5701] rounded-full flex items-center justify-center mb-2 animate-bounce">
+                          <Check size={26} />
+                        </div>
+                        <div>
+                          <h4 className="font-serif font-bold text-2xl text-[var(--c-text)]">
+                            TRANSMISSION SUCCESSFUL
+                          </h4>
+                          <p className="font-mono text-[10px] text-[var(--c-muted)] mt-1 uppercase tracking-wider">
+                            INBOX QUEUED - SEATTLE TIME APPRECIATED
+                          </p>
+                        </div>
+
+                        <div className="w-full bg-[var(--c-text)]/5 border border-[var(--c-border)] rounded p-4 text-left font-mono text-[10px] space-y-1.5 my-3 relative shadow-sm select-all">
+                          <div className="flex justify-between border-b border-[var(--c-border)] pb-1.5 mb-2">
+                            <span className="font-bold text-[var(--c-text)]">VOID ID INDEXER</span>
+                            <span className="text-[#FF5701] font-bold">{ticketId}</span>
+                          </div>
+                          <div className="grid grid-cols-[80px_1fr] gap-x-2 text-[var(--c-muted)]">
+                            <span>SENDER_VAL:</span> <span className="text-[var(--c-text)] font-semibold">{form.name}</span>
+                            <span>ORIGIN_EM:</span> <span className="text-[var(--c-text)] font-semibold">{form.email}</span>
+                            <span>DEPT_CHG:</span> <span className="text-[var(--c-text)] font-semibold">{form.projectType}</span>
+                            <span>TIMESTAMP:</span> <span className="text-[var(--c-text)] font-semibold">2026-06-05 UTC</span>
+                          </div>
+                        </div>
+
+                        <button
+                          onClick={resetForm}
+                          className="font-mono text-[9px] uppercase tracking-widest text-[var(--c-muted)] hover:text-[#FF5701] border-b border-dashed border-[var(--c-border)] hover:border-[#FF5701] pb-0.5 mt-2 transition-all cursor-pointer"
+                        >
+                          Transmit fresh query
+                        </button>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="ai-panel"
+                  initial={{ opacity: 0, x: 8 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 8 }}
+                  transition={{ duration: 0.2 }}
+                  className="flex-1 flex flex-col min-h-0"
+                  style={{ height: '100%' }}
                 >
-                  Transmit fresh query
-                </button>
-              </motion.div>
-            )}
-          </AnimatePresence>
+                  <QueryMiad />
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
         </div>
       </div>
     </div>
