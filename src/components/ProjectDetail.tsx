@@ -127,7 +127,7 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onClose }
         <div className="p-6 md:p-10 border-t border-white/10 bg-white/5 flex flex-col gap-4 sm:flex-row sm:justify-between sm:items-center">
           <div className="flex flex-col">
             <span className="font-mono text-[8px] text-white/50 uppercase">Current State</span>
-            <span className="font-mono text-[10px] text-[#FF5701] font-semibold">PROCASTINATED SECURELY</span>
+            <span className="font-mono text-[10px] text-[#FF5701] font-semibold">PROCRASTINATED SECURELY</span>
           </div>
           <button
             onClick={onClose}
