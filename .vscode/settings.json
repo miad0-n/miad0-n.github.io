@@ -1,0 +1,8 @@
+{
+  // Tailwind v4 uses non-standard at-rules (@theme, @custom-variant, @layer, etc.)
+  // that VS Code's built-in CSS linter doesn't recognize. Disabling CSS validation
+  // removes the false-positive "Unknown at rule" warnings. Vite + Tailwind handle
+  // these correctly at build time — this setting only affects the IDE linter.
+  "css.validate": false,
+  "scss.validate": false
+}
