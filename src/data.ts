@@ -17,7 +17,7 @@ export const PROJECTS: Project[] = [
   {
     id: 'something-probably',
     index: '01',
-    category: 'PROCASTINATION / TBD',
+    category: 'PROCRASTINATION / TBD',
     title: 'Something, probably',
     year: 'COMING SOON',
     role: 'Lead Dreamer',
