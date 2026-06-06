@@ -12,6 +12,9 @@ import {
   SnackDaemonPlugin,
   CssDebuggerPlugin,
   SleepSchedulerPlugin,
+  TabKillerPlugin,
+  SnackRunnerPlugin,
+  VoidTyperPlugin,
 } from './LabWidgets';
 import { ResearchNotebook } from './ResearchNotebook';
 import { BookOpen, ChevronDown, ChevronUp, Check, Send, Sparkles } from 'lucide-react';
@@ -171,7 +174,7 @@ export const LabScreen: React.FC = () => {
         </h2>
       </div>
 
-      {/* Grid of four plugin cards */}
+      {/* Grid of four system plugin cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
         <CuriosityPlugin />
         <SnackDaemonPlugin />
@@ -179,8 +182,26 @@ export const LabScreen: React.FC = () => {
         <SleepSchedulerPlugin />
       </div>
 
+      {/* Divider + mini-game section */}
+      <div className="mt-4 mb-1 flex items-center gap-3">
+        <span className="font-mono text-[9px] text-[var(--c-text)]/30 uppercase tracking-[0.2em] select-none whitespace-nowrap">
+          MINI-APPS
+        </span>
+        <div className="flex-1 border-t border-[var(--c-border)]" />
+        <span className="font-mono text-[8px] text-[#FF5701]/50 uppercase tracking-wider select-none whitespace-nowrap">
+          INTERACTIVE
+        </span>
+      </div>
+
+      {/* Grid of three interactive game cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <TabKillerPlugin />
+        <SnackRunnerPlugin />
+        <VoidTyperPlugin />
+      </div>
+
       <p className="font-mono text-[9px] text-[var(--c-muted)] uppercase tracking-wider text-right block mt-3 select-none">
-        ▲ All plugins running without permission. Uninstall attempts will be ignored.
+        ▲ All plugins & mini-apps running without permission. Uninstall attempts will be ignored.
       </p>
     </div>
   );

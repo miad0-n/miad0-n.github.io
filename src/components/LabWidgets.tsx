@@ -4,6 +4,7 @@
  */
 
 import React, { useState, useEffect } from 'react';
+import { TabKillerGame, SnackRunnerGame, VoidTyperGame } from './MiniGames';
 
 // ==========================================
 // Plugin card data
@@ -224,3 +225,72 @@ export const CuriosityPlugin: React.FC = () => <PluginCard plugin={PLUGINS[0]} i
 export const SnackDaemonPlugin: React.FC = () => <PluginCard plugin={PLUGINS[1]} index={1} />;
 export const CssDebuggerPlugin: React.FC = () => <PluginCard plugin={PLUGINS[2]} index={2} />;
 export const SleepSchedulerPlugin: React.FC = () => <PluginCard plugin={PLUGINS[3]} index={3} />;
+
+// ==========================================
+// Game Plugin Card wrapper
+// ==========================================
+interface GamePluginMeta {
+  name: string;
+  version: string;
+  stability: string;
+  index: number;
+}
+
+const GamePluginCard: React.FC<GamePluginMeta & { children: React.ReactNode }> = ({
+  name,
+  version,
+  stability,
+  index,
+  children,
+}) => (
+  <div className="w-full h-full bg-[var(--c-surface)] border border-[var(--c-border)] rounded-lg p-5 flex flex-col justify-between group select-none hover:border-[#FF5701]/30 transition-all duration-300 shadow-sm hover:shadow-md">
+    {/* Header */}
+    <div className="flex items-center justify-between mb-3">
+      <div className="flex items-center gap-2">
+        {/* Always-pulsing orange dot — it's a game, always active */}
+        <span className="relative flex h-2 w-2">
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-50 bg-[#FF5701]" />
+          <span className="relative inline-flex rounded-full h-2 w-2 bg-[#FF5701]" />
+        </span>
+        <span className="font-mono text-[9px] text-[var(--c-text)]/40 uppercase tracking-wider font-semibold">
+          {String(index + 1).padStart(2, '0')} / MINI-APP
+        </span>
+      </div>
+      <span className="font-mono text-[8px] uppercase tracking-wider px-1.5 py-0.5 border rounded-full text-[#FF5701] border-[#FF5701]/30 bg-[#FF5701]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+        INTERACTIVE
+      </span>
+    </div>
+
+    {/* Plugin name & version */}
+    <h4 className="font-mono font-bold text-sm md:text-base text-[var(--c-text)] leading-tight">
+      {name}
+    </h4>
+    <div className="flex items-center gap-2 mt-1 mb-4">
+      <span className="font-mono text-[9px] text-[#FF5701] font-semibold">{version}</span>
+      <span className="font-mono text-[8px] text-[var(--c-text)]/30">({stability})</span>
+    </div>
+
+    {/* Game content */}
+    <div className="flex-1 border-t border-[var(--c-border)] pt-3">
+      {children}
+    </div>
+  </div>
+);
+
+export const TabKillerPlugin: React.FC = () => (
+  <GamePluginCard name="tab_killer.exe" version="v0.1.0" stability="chaotic" index={4}>
+    <TabKillerGame />
+  </GamePluginCard>
+);
+
+export const SnackRunnerPlugin: React.FC = () => (
+  <GamePluginCard name="snack_runner.exe" version="v3.2.0" stability="surprisingly stable" index={5}>
+    <SnackRunnerGame />
+  </GamePluginCard>
+);
+
+export const VoidTyperPlugin: React.FC = () => (
+  <GamePluginCard name="void_typer.exe" version="v2.0.1" stability="pedantic" index={6}>
+    <VoidTyperGame />
+  </GamePluginCard>
+);
