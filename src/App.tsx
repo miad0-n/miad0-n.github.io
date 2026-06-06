@@ -24,6 +24,8 @@ export default function App() {
   const [isDark, setIsDark] = useState<boolean>(false);
   const isMovingRef = useRef<boolean>(false);
   const mobileScrollRef = useRef<HTMLElement>(null);
+  // Ref mirror of isMobile — used inside event handlers to avoid stale closures
+  const isMobileRef = useRef<boolean>(false);
 
   // ── Loading screen — once per session ───────────────────────────
   const [showLoader, setShowLoader] = useState<boolean>(() => {
@@ -56,19 +58,23 @@ export default function App() {
     localStorage.setItem('portfolio_theme', next ? 'dark' : 'light');
   };
 
-  // Detect mobile viewport
+  // Detect touch/pointer device — pointer:coarse = finger (phone + ALL iPads, any orientation)
   useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+    const mq = window.matchMedia('(pointer: coarse)');
+    const update = () => {
+      setIsMobile(mq.matches);
+      isMobileRef.current = mq.matches;
+    };
+    update();
+    mq.addEventListener('change', update);
+    return () => mq.removeEventListener('change', update);
   }, []);
 
   const jump = (idx: number) => {
     const nextIdx = Math.max(0, Math.min(4, idx));
     setCurrentSection(nextIdx);
     // On mobile, also programmatically scroll the snap container to the target section
-    if (mobileScrollRef.current && window.innerWidth < 768) {
+    if (mobileScrollRef.current && isMobileRef.current) {
       mobileScrollRef.current.scrollTo({
         top: nextIdx * mobileScrollRef.current.clientHeight,
         behavior: 'smooth',
@@ -138,8 +144,8 @@ export default function App() {
     };
 
     const handleTouchEnd = (e: TouchEvent) => {
-      // On mobile, CSS scroll-snap handles section navigation natively
-      if (window.innerWidth < 768) return;
+      // On touch devices, CSS scroll-snap handles navigation natively — skip JS handler
+      if (isMobileRef.current) return;
       if (selectedProject) return;
 
       const target = e.target as HTMLElement;
@@ -214,31 +220,31 @@ export default function App() {
           className="w-full h-full overflow-y-scroll"
           style={{
             scrollSnapType: 'y mandatory',
-            WebkitOverflowScrolling: 'touch',
+            overscrollBehavior: 'contain', // prevent scroll bleeding to body at snap boundaries
           }}
         >
           {/* SCREEN 01: MANIFESTO */}
-          <section className="w-full h-dvh px-6 pt-[80px] pb-6 flex flex-col justify-between shrink-0 overflow-y-auto" style={{ scrollSnapAlign: 'start' }}>
+          <section className="w-full h-dvh px-6 md:px-14 pt-[80px] md:pt-24 pb-6 md:pb-8 flex flex-col justify-between shrink-0 overflow-y-auto" style={{ scrollSnapAlign: 'start', scrollSnapStop: 'always' }}>
             <ManifestoScreen />
           </section>
 
           {/* SCREEN 02: OUTCOMES */}
-          <section className="w-full h-dvh px-6 pt-[80px] pb-6 flex flex-col justify-between shrink-0 overflow-y-auto" style={{ scrollSnapAlign: 'start' }}>
+          <section className="w-full h-dvh px-6 md:px-14 pt-[80px] md:pt-24 pb-6 md:pb-8 flex flex-col justify-between shrink-0 overflow-y-auto" style={{ scrollSnapAlign: 'start', scrollSnapStop: 'always' }}>
             <SelectedWorkScreen onSelectProject={setSelectedProject} />
           </section>
 
           {/* SCREEN 03: THE LAB */}
-          <section className="w-full h-dvh px-6 pt-[80px] pb-6 flex flex-col justify-between shrink-0 overflow-y-auto" style={{ scrollSnapAlign: 'start' }}>
+          <section className="w-full h-dvh px-6 md:px-14 pt-[80px] md:pt-24 pb-6 md:pb-8 flex flex-col justify-between shrink-0 overflow-y-auto" style={{ scrollSnapAlign: 'start', scrollSnapStop: 'always' }}>
             <LabScreen />
           </section>
 
           {/* SCREEN 04: STUDENT BIO */}
-          <section className="w-full h-dvh px-6 pt-[80px] pb-6 flex flex-col justify-between shrink-0 overflow-y-auto" style={{ scrollSnapAlign: 'start' }}>
+          <section className="w-full h-dvh px-6 md:px-14 pt-[80px] md:pt-24 pb-6 md:pb-8 flex flex-col justify-between shrink-0 overflow-y-auto" style={{ scrollSnapAlign: 'start', scrollSnapStop: 'always' }}>
             <BioScreen />
           </section>
 
           {/* SCREEN 05: INQUIRY */}
-          <section className="w-full h-dvh px-6 pt-[80px] pb-6 flex flex-col justify-between shrink-0 overflow-y-auto" style={{ scrollSnapAlign: 'start' }}>
+          <section className="w-full h-dvh px-6 md:px-14 pt-[80px] md:pt-24 pb-6 md:pb-8 flex flex-col justify-between shrink-0 overflow-y-auto" style={{ scrollSnapAlign: 'start', scrollSnapStop: 'always' }}>
             <ConnectScreen />
           </section>
         </main>

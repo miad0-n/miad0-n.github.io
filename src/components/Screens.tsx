@@ -69,19 +69,19 @@ export const ManifestoScreen: React.FC = () => {
               className="overflow-hidden mt-4 pt-4 border-t border-[var(--c-border)]"
             >
               <div className="space-y-4 pr-1">
-              {keyPrinciples.map((p) => (
-                <div key={p.num} className="grid grid-cols-[30px_1fr] gp-3 gap-3">
-                  <span className="font-mono text-[10px] text-[#FF5701] font-bold">{p.num}</span>
-                  <div>
-                    <h4 className="font-mono text-[9px] uppercase tracking-wider font-bold text-[var(--c-text)]">
-                      {p.title}
-                    </h4>
-                    <p className="font-mono text-[9.5px] leading-relaxed text-[var(--c-muted)] mt-1 text-justify">
-                      {p.body}
-                    </p>
+                {keyPrinciples.map((p) => (
+                  <div key={p.num} className="grid grid-cols-[30px_1fr] gp-3 gap-3">
+                    <span className="font-mono text-[10px] text-[#FF5701] font-bold">{p.num}</span>
+                    <div>
+                      <h4 className="font-mono text-[9px] uppercase tracking-wider font-bold text-[var(--c-text)]">
+                        {p.title}
+                      </h4>
+                      <p className="font-mono text-[9.5px] leading-relaxed text-[var(--c-muted)] mt-1 text-justify">
+                        {p.body}
+                      </p>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
               </div>
             </motion.div>
           )}
@@ -118,30 +118,33 @@ export const SelectedWorkScreen: React.FC<SelectedWorkScreenProps> = ({ onSelect
           <div
             key={project.id}
             onClick={() => onSelectProject(project)}
-            className="group relative bg-[var(--c-surface)] border border-[var(--c-border)] p-6 md:p-8 flex flex-col justify-between min-h-[190px] md:min-h-[240px] cursor-pointer shadow-sm hover:bg-[#FF5701] hover:text-white hover:border-transparent hover:-rotate-1 hover:-translate-y-0.5 transition-all duration-300 rounded-lg select-none"
+            // Empty onTouchStart is the iOS Safari fix: it "unlocks" :active on elements
+            // that have -webkit-user-select:none, which otherwise blocks :active entirely.
+            onTouchStart={() => { }}
+            className="group relative bg-[var(--c-surface)] border border-[var(--c-border)] p-6 md:p-8 flex flex-col justify-between min-h-[190px] md:min-h-[240px] cursor-pointer shadow-sm hover:bg-[#FF5701] active:bg-[#FF5701] hover:text-white active:text-white hover:border-transparent active:border-transparent hover:-rotate-1 active:-rotate-1 hover:-translate-y-0.5 active:-translate-y-0.5 transition-all duration-300 rounded-lg select-none"
           >
             <div>
               <div className="flex justify-between items-start mb-4">
-                <span className="font-mono text-[10.5px] text-[var(--c-text)]/45 group-hover:text-white/60 font-semibold">
+                <span className="font-mono text-[10.5px] text-[var(--c-text)]/45 group-hover:text-white/60 group-active:text-white/60 font-semibold">
                   {project.index} // {project.year}
                 </span>
-                <span className="font-mono text-[8.5px] uppercase text-[var(--c-text)] border border-[var(--c-text)]/20 group-hover:text-white group-hover:border-white/40 rounded-full px-2 py-0.5 tracking-wider opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <span className="font-mono text-[8.5px] uppercase text-[var(--c-text)] border border-[var(--c-text)]/20 group-hover:text-white group-active:text-white group-hover:border-white/40 group-active:border-white/40 rounded-full px-2 py-0.5 tracking-wider opacity-0 group-hover:opacity-100 group-active:opacity-100 transition-opacity duration-300">
                   CASE STUDY
                 </span>
               </div>
-              <p className="font-serif font-bold text-2xl md:text-3xl text-[var(--c-text)] group-hover:text-white group-hover:opacity-90 transition-opacity duration-300 leading-tight">
+              <p className="font-serif font-bold text-2xl md:text-3xl text-[var(--c-text)] group-hover:text-white group-active:text-white group-hover:opacity-90 group-active:opacity-90 transition-opacity duration-300 leading-tight">
                 {project.title}
               </p>
-              <p className="font-mono text-[9px] text-[var(--c-muted)] group-hover:text-white/80 uppercase tracking-wider mt-1 border-b border-[var(--c-border)] group-hover:border-white/20 pb-3">
+              <p className="font-mono text-[9px] text-[var(--c-muted)] group-hover:text-white/80 group-active:text-white/80 uppercase tracking-wider mt-1 border-b border-[var(--c-border)] group-hover:border-white/20 group-active:border-white/20 pb-3">
                 {project.category}
               </p>
             </div>
-            
+
             <div className="flex justify-between items-center mt-6">
-              <span className="font-mono text-[9px] text-[var(--c-text)]/60 group-hover:text-white transition-colors uppercase">
+              <span className="font-mono text-[9px] text-[var(--c-text)]/60 group-hover:text-white group-active:text-white transition-colors uppercase">
                 READ SPECIFICATION
               </span>
-              <span className="font-mono text-base md:text-lg text-[var(--c-text)]/30 group-hover:text-white group-hover:translate-x-1.5 transition-all duration-300">
+              <span className="font-mono text-base md:text-lg text-[var(--c-text)]/30 group-hover:text-white group-active:text-white group-hover:translate-x-1.5 group-active:translate-x-1.5 transition-all duration-300">
                 →
               </span>
             </div>
@@ -228,7 +231,7 @@ export const BioScreen: React.FC = () => {
               ))}
             </div>
           </div>
-          
+
           <div className="flex flex-col sm:flex-row border-t border-[var(--c-border)] pt-4 gap-4">
             <p className="font-mono text-[10.5px] leading-relaxed text-[var(--c-muted)] w-full sm:w-1/2 text-justify">
               Status: figuring it out, with style.
@@ -331,10 +334,10 @@ export const ConnectScreen: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-stretch mt-4">
         {/* Left: Giant action anchors */}
         <div className="lg:col-span-6 flex flex-col justify-between">
-          <div className="space-y-3">
+          <div className="space-y-2">
             <a
               href="mailto:miadninezero@gmail.com?subject=Inquiry"
-              className="group font-serif font-bold text-[clamp(2.5rem,7vw,5.5rem)] leading-none text-[var(--c-text)] hover:text-[#FF5701] transition-all block select-none uppercase"
+              className="group font-serif font-bold text-[clamp(2rem,6vw,4.5rem)] leading-none text-[var(--c-text)] hover:text-[#FF5701] transition-all block select-none uppercase"
             >
               EMAIL{' '}
               <span className="inline-block text-xl md:text-3xl font-mono text-[var(--c-text)]/20 group-hover:text-[#FF5701] group-hover:translate-x-1.5 duration-300">
@@ -345,9 +348,20 @@ export const ConnectScreen: React.FC = () => {
               href="https://github.com/miadninezero"
               target="_blank"
               rel="noopener noreferrer"
-              className="group font-serif font-bold text-[clamp(2.5rem,7vw,5.5rem)] leading-none text-[var(--c-text)] hover:text-[#FF5701] transition-all block select-none uppercase"
+              className="group font-serif font-bold text-[clamp(2rem,6vw,4.5rem)] leading-none text-[var(--c-text)] hover:text-[#FF5701] transition-all block select-none uppercase"
             >
               GITHUB{' '}
+              <span className="inline-block text-xl md:text-3xl font-mono text-[var(--c-text)]/20 group-hover:text-[#FF5701] group-hover:translate-x-1.5 duration-300">
+                ↗
+              </span>
+            </a>
+            <a
+              href="https://wa.me/+8801608229699"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group font-serif font-bold text-[clamp(2rem,6vw,4.5rem)] leading-none text-[var(--c-text)] hover:text-[#FF5701] transition-all block select-none uppercase"
+            >
+              WHATSAPP{' '}
               <span className="inline-block text-xl md:text-3xl font-mono text-[var(--c-text)]/20 group-hover:text-[#FF5701] group-hover:translate-x-1.5 duration-300">
                 ↗
               </span>

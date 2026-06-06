@@ -55,12 +55,16 @@
   --c-primary: #FF5701;
 }
 
+html {
+  height: -webkit-fill-available; /* iOS Safari viewport fix */
+}
+
 body {
   background-color: var(--c-bg);
   color: var(--c-text);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
-  overflow: hidden;
+  overflow: hidden; /* page scroll lock — snap container handles its own scroll */
   transition: background-color 0.4s ease, color 0.4s ease;
 }
 
